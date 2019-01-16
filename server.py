@@ -1,3 +1,5 @@
+#for aditional information email: shaykhsiddiqee@gmail.com
+
 import socket
 import sys
 
