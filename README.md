@@ -1,4 +1,4 @@
 # Socket-Connection-Python-
 socket connection and remote pc using python
 
-open client.py file then change the host ip address to server ip address of your, then execute it to victimes computer.
+open client.py file and execute it to other computer. For running server.py you must need a server and you need that server ip address when running client.py in other pc.
