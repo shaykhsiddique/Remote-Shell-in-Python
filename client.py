@@ -4,7 +4,7 @@ import subprocess
 
 skt = socket.socket()
 # change this IP address to server ip address.
-host ="172.31.38.46"
+host ="192.168.0.1"
 port = 9999
 
 skt.connect((host, port))
