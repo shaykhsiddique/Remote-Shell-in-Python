@@ -1,5 +1,5 @@
 # Socket Connection (Python)
-socket connection and remote pc using python
+socket connection / remote connection using python
 
 ```**Just run client.py in victim pc, enter your server ip and run server.py in your server** ```
 
