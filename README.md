@@ -9,3 +9,8 @@ open client.py file and execute it to other computer. For running server.py you 
   > Two computers. (one is for clients/victims)
   
   > server.py must run of a public server and in client.py use the IP of that server
+
+# License
+  > No License is require.
+  
+  > Fully open-source.
