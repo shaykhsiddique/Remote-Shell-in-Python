@@ -8,8 +8,8 @@ def information_():
     global host
     global port
     global skt
-    #host = input("Enter IP address: ")
-    host = "192.168.0.101"
+    host = input("Enter IP address: ")
+    #host = "192.168.0.101"
     port = 9999
     skt = socket.socket()
 
