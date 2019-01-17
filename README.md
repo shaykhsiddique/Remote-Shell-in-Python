@@ -1,4 +1,4 @@
-# Socket Connection (Python)
+# Remote Shell in Python
 socket/remote connection using python
 
 ```**Just run client.py in victim pc, enter your server ip and run server.py in your server** ```
