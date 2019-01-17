@@ -27,7 +27,6 @@ def connect_server():
         print("Socket connection error: " + str(msg) + "\n.. Check the server connection...\n")
 
 
-
 def data_receiving():
     global host
     global port
