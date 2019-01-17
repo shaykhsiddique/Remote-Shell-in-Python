@@ -49,7 +49,7 @@ def data_receiving():
 
             skt.send(str.encode(output_string))
 
-
+            
 def main():
     information_()
     connn = False
